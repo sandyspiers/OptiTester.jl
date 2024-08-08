@@ -834,11 +834,11 @@ weakdeps = ["Random", "Test"]
     TestExt = ["Test", "Random"]
 
 [[deps.TypedNamedTuples]]
-git-tree-sha1 = "18d3a4d7c0859ada3e09f0207b1622c1fd316bf5"
+git-tree-sha1 = "037c62c4264ddb0e1603989d63193508c7f751f5"
 repo-rev = "main"
 repo-url = "https://github.com/sandyspiers/TypedNamedTuples.jl.git"
 uuid = "ccff231a-7084-4552-ab5c-55556ada9b2a"
-version = "1.0.0-DEV"
+version = "1.0.1"
 
 [[deps.URIs]]
 git-tree-sha1 = "67db6cc7b3821e19ebe75791a9dd19c9b1188f2b"
