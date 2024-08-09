@@ -28,9 +28,11 @@ end
 abstract type AbstractIterable end
 struct Iterable <: AbstractIterable
     iterate
+    Iterable(iterates...) = new([iterates...])
 end
 struct FlattenIterable <: AbstractIterable
     iterate
+    FlattenIterable(iterates...) = new([iterates...])
 end
 
 # # Special Iterables

@@ -12,8 +12,8 @@ addprocs(2)
 # test how speed and motivation levels improve solve times
 optitest = OptiTest(;#
     num=Iterable(1:100),
-    speed=Iterable([:slow, :medium, :fast]),
-    motivation=Iterable([:low, :high]),
+    speed=Iterable(:slow, :medium, :fast),
+    motivation=Iterable(:low, :high),
 )
 @everywhere function random_solve_time(test)
     if test.speed == :slow

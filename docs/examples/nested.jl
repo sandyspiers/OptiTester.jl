@@ -12,11 +12,11 @@ addprocs(2)
 # test how speed and motivation levels improve solve times
 optitest = OptiTest(;#
     num=Iterable(1:100),
-    speed=Iterable([:slow, :medium, :fast]),
-    wellbeing=FlattenIterable([#
+    speed=Iterable(:slow, :medium, :fast),
+    wellbeing=FlattenIterable(#
         (happiness=:poor,),
         (happiness=:high, motivation=Iterable([:low, :high])),
-    ]),
+    ),
 )
 @everywhere function motivated_solve_time(test)
     if test.speed == :slow

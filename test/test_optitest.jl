@@ -10,6 +10,12 @@
         @test first(iters).x == 1
         @test last(iters).x == 10
 
+        nt = (x=Iterable(1, 2, 3, 4, 5),)
+        iters = _iterate(nt)
+        @test length(iters) == 5
+        @test first(iters).x == 1
+        @test last(iters).x == 5
+
         nt = (x=Iterable(1:10), y=Iterable([:a, :b]), z=rand)
         iters = _iterate(nt)
         @test length(iters) == 20
@@ -20,6 +26,14 @@
         @test first(iters).z == rand
 
         nt = (x=Iterable([1, Iterable(2:10)]), y=Iterable([:a, :b]))
+        iters = _iterate(nt)
+        @test length(iters) == 20
+        @test first(iters).x == 1
+        @test last(iters).x == 10
+        @test first(iters).y == :a
+        @test last(iters).y == :b
+
+        nt = (x=Iterable(1, Iterable(2:10)), y=Iterable([:a, :b]))
         iters = _iterate(nt)
         @test length(iters) == 20
         @test first(iters).x == 1
