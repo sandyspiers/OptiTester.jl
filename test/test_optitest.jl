@@ -49,6 +49,23 @@
         @test_throws Exception first(iters).y
         @test first(iters).a == :a
         @test last(iters).a == :c
+
+        nt = (
+            x=Iterable(1:3),
+            y=FlattenIterable(#
+                (a=:a,),
+                (a=Iterable(:b, :c), c=Iterable(:hi, :bye)),
+                (c=:c, d=Iterable(1:10)),
+            ),
+        )
+        iters = _iterate(nt)
+        @test length(iters) == 45
+        @test first(iters).x == 1
+        @test last(iters).x == 3
+        @test_throws Exception first(iters).y
+        @test first(iters).a == :a
+        @test last(iters).c == :c
+        @test last(iters).d == 10
     end
     @testset "OptiTest" begin
         optitest = OptiTest(;#
