@@ -1,8 +1,6 @@
 # A small example usage to see if motivation improves random run times.
-using OptiTester: OptiTest, Iterable, FlattenIterable
-using OptiTester: run, plot
-using OptiTester: DataFrame, PerformanceProfile
-using Distributed: addprocs, rmprocs, workers, @everywhere
+using OptiTester
+using Distributed
 
 # add some workers
 rmprocs(workers())

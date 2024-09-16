@@ -1,8 +1,6 @@
 # A small example usage to see if motivation improves random run times.
-using OptiTester: OptiTest, Iterable
-using OptiTester: run, plot
-using OptiTester: DataFrame, PerformanceProfile
-using Distributed: addprocs, rmprocs, workers, @everywhere
+using OptiTester
+using Distributed
 
 # add some workers
 rmprocs(workers())
@@ -27,6 +25,7 @@ optitest = OptiTest(;#
     end
     return test
 end
+
 # run optitest
 results = run(optitest, random_solve_time)
 df = DataFrame(results)
