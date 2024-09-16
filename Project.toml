@@ -1,7 +1,7 @@
 name = "OptiTester"
 uuid = "8e73529a-8039-44f2-9503-feb13149ead0"
 authors = ["sandyspiers <sandy.spiers@curtin.edu.au> and contributors"]
-version = "0.1.1-dev"
+version = "0.2.1-dev"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
