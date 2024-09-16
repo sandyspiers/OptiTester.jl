@@ -3,6 +3,7 @@
         @test _iterate(1) == 1
         @test _iterate([1, 2, 3]) == [1, 2, 3]
         @test _iterate(Iterable(1:10)) == 1:10
+        @test _iterate(Iterable(:x, rand, 10)) == [:x, rand, 10]
 
         nt = (x=Iterable(1:10),)
         iters = _iterate(nt)
@@ -23,7 +24,7 @@
         @test last(iters).x == 10
         @test first(iters).y == :a
         @test last(iters).y == :b
-        @test first(iters).z == rand
+        @test first(iters).z == last(iters).z == rand
 
         nt = (x=Iterable([1, Iterable(2:10)]), y=Iterable([:a, :b]))
         iters = _iterate(nt)
@@ -47,6 +48,7 @@
         @test first(iters).x == 1
         @test last(iters).x == 3
         @test_throws Exception first(iters).y
+        @test_throws Exception last(iters).y
         @test first(iters).a == :a
         @test last(iters).a == :c
 
@@ -63,11 +65,31 @@
         @test first(iters).x == 1
         @test last(iters).x == 3
         @test_throws Exception first(iters).y
+        @test_throws Exception last(iters).y
         @test first(iters).a == :a
         @test last(iters).c == :c
         @test last(iters).d == 10
     end
     @testset "OptiTest" begin
+        # Test Flatten
+        optitest = OptiTest(;#
+            a=FlattenIterable((#
+                x=Iterable(1:10),
+                s=:test,
+            )),
+            b=Iterable([:a, :b]),
+        )
+        test = tests(optitest)
+        @test length(test) == 20
+        @test first(test).x == 1
+        @test first(test).s == :test
+        @test_throws Exception first(test).a
+        @test first(test).b == :a
+        @test last(test).x == 10
+        @test last(test).s == :test
+        @test last(test).b == :b
+
+        # Test Seed
         optitest = OptiTest(;#
             a=FlattenIterable((#
                 x=Iterable(1:10),
@@ -103,6 +125,8 @@
             rmprocs(workers())
         end
         results = run(optitest, rand_run)
+        @test results isa AbstractVecOrMat{TestRun}
+        @test length(results) == 20
         @test all(r.solve_time > 0 for r in results)
         @test all(r.id == 1 for r in results)
 
@@ -110,6 +134,8 @@
         addprocs(10)
         @everywhere import OptiTester
         results = run(optitest, rand_run)
+        @test results isa AbstractVecOrMat{TestRun}
+        @test length(results) == 20
         @test all(r.solve_time > 0 for r in results)
         @test minimum(r.id for r in results) < maximum(r.id for r in results)
     end
@@ -133,6 +159,7 @@
         @test nrow(df) == 20
         @test maximum(df.solve_time) < 1
         @test unique(df.b) == [:a, :b]
+        @test all(propertynames(df) .== [:x, :s, :b, :solve_time, :id])
 
         # noncomplain df
         function rand_run_flacky(t)
@@ -144,12 +171,13 @@
         end
         results = run(optitest, rand_run_flacky)
         @test results isa AbstractVecOrMat{TestRun}
+        @test_throws Exception [t.flacky for t in tests]
         df = DataFrame(results)
         @test nrow(df) == 20
         @test maximum(df.solve_time) < 1
         @test unique(df.b) == [:a, :b]
+        @test all(propertynames(df) .== [:x, :s, :b, :solve_time, :flacky])
         # make sure some tests dont have flacky
-        @test_throws Exception [t.flacky for t in tests]
         @test any(ismissing.(df.flacky))
         @test any(df.flacky .== :hello)
     end
