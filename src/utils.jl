@@ -11,6 +11,18 @@ function flatten(nt::NamedTuple, flat)::NamedTuple
     return merge(values(sub_nt)..., nt)
 end
 
+function double_flatten(vec::Vector)::Vector
+    flat = []
+    for v in vec
+        if v isa AbstractVecOrMat
+            push!(flat, v...)
+        else
+            push!(flat, v)
+        end
+    end
+    return flat
+end
+
 function apply(nt::NamedTuple, fn::Function)::NamedTuple
     return NamedTuple((k => fn(k, v) for (k, v) in key_vals(nt)))
 end

@@ -1,5 +1,6 @@
 # # OptiTest
 @TypedNamedTuple OptiTest
+using Base: containsnul
 
 # # TestRun
 @MutableTypedNamedTuple TestRun
@@ -44,14 +45,7 @@ end
 
 # # Iterate method
 _iterate(any) = any
-function _iterate(vec::Vector)
-    # TODO streamline this!
-    try
-        return vcat(_iterate.(vec)...)
-    catch e
-        return Iterators.flatten(_iterate.(vec))
-    end
-end
+_iterate(vec::Vector) = double_flatten(_iterate.(vec))
 _iterate(iter::AbstractIterable) = _iterate(getfield(iter, :iterate))
 function _iterate(nt::NamedTuple)
     iter_pairs = ((k, v) for (k, v) in key_vals(nt) if v isa AbstractIterable)
