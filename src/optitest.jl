@@ -55,11 +55,10 @@ end
 _iterate(iter::AbstractIterable) = _iterate(getfield(iter, :iterate))
 function _iterate(nt::NamedTuple)
     iter_pairs = ((k, v) for (k, v) in key_vals(nt) if v isa AbstractIterable)
-    if iter_pairs == ()
+    names, iter = unzip(iter_pairs)
+    if length(names) == 0
         return nt
     end
-
-    names, iter = unzip(iter_pairs)
     prods = Iterators.product(_iterate.(iter)...)
     iterates = (merge(nt, NamedTuple(zip(names, prod))) for prod in prods)
 
