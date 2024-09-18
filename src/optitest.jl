@@ -56,7 +56,7 @@ function _iterate(nt::NamedTuple)
     iterates = (merge(nt, NamedTuple(zip(names, prod))) for prod in prods)
 
     # specials
-    seed_fn(k, v) = v isa Seed ? v.seed_ref[] += 1 : v
+    seed_fn(_, v) = v isa Seed ? v.seed_ref[] += 1 : v
     iterates = (apply(iter, seed_fn) for iter in iterates)
 
     flat = (k for (k, v) in iter_pairs if v isa FlattenIterable)
