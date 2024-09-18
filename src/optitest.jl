@@ -1,6 +1,5 @@
 # # OptiTest
 @TypedNamedTuple OptiTest
-using Base: containsnul
 
 # # TestRun
 @MutableTypedNamedTuple TestRun
