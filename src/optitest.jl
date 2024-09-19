@@ -11,7 +11,7 @@ end
 """
     run(optitest::OptiTest, solver::Function)
 
-Runs the OptiTest using `solver` on each test in `optitest`.
+Runs an OptiTest using `solver` on each test in `optitest`.
 """
 function run(optitest::OptiTest, solver::Function)
     return pmap(solver, tests(optitest))
