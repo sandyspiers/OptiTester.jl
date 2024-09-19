@@ -42,7 +42,7 @@
         @test first(iters).y == :a
         @test last(iters).y == :b
 
-        nt = (x=Iterable(1:3), y=FlattenIterable([(a=:a,), (a=Iterable([:b, :c]),)]))
+        nt = (x=Iterable(1:3), y=FlattenIterable((a=:a,), (a=Iterable([:b, :c]),)))
         iters = _iterate(nt)
         @test length(iters) == 9
         @test first(iters).x == 1
@@ -51,6 +51,43 @@
         @test_throws Exception last(iters).y
         @test first(iters).a == :a
         @test last(iters).a == :c
+
+        nt = (
+            y = FlattenIterable(;
+                a=Iterable(1:3),
+                b=Iterable(1:3),
+                c=Iterable(1:3),
+                d=Iterable(1:3),
+                e=Iterable(1:3),
+            )
+        )
+        iters = _iterate(nt)
+        @test length(iters) == 243
+        @test first(iters).a == 1
+        @test first(iters).e == 1
+        @test last(iters).a == 3
+        @test last(iters).e == 3
+        @test_throws Exception first(iters).y
+        @test_throws Exception last(iters).y
+
+        nt = (
+            x=:X,
+            y=FlattenIterable((
+                a=Iterable(1:3),
+                b=Iterable(1:3),
+                c=Iterable(1:3),
+                d=Iterable(1:3),
+                e=Iterable(1:3),
+            ),),
+        )
+        iters = _iterate(nt)
+        @test length(iters) == 243
+        @test first(iters).a == 1
+        @test first(iters).e == 1
+        @test last(iters).a == 3
+        @test last(iters).e == 3
+        @test_throws Exception first(iters).y
+        @test_throws Exception last(iters).y
 
         nt = (
             x=Iterable(1:3),
