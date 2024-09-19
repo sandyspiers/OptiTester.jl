@@ -20,6 +20,14 @@ struct PerformanceProfile <: PlotData
     identifiers::Vector
     solve_times::Vector
 end
+
+"""
+    PerformanceProfile(df, identifier, solve_time)
+
+Creates a `PerformanceProfile` struct, using `df`.
+`identifier` can be a vector of symbols, which are the the columns
+of the solver identifiers.
+"""
 function PerformanceProfile(df, identifier, solve_time)
     max_time = maximum(df[!, solve_time])
     num_tests = 0
@@ -40,6 +48,14 @@ function PerformanceProfile(df, identifier, solve_time)
     end
     return PerformanceProfile(max_time, num_tests, labels, solve_times)
 end
+
+"""
+    plot!(pp::PerformanceProfile; style_guide=(), kwargs...)
+
+Plot the performance profile.
+`style_guide` sould be a named tuple of pairs to of structure
+`solver => key => style_args`.
+"""
 function plot!(pp::PerformanceProfile; style_guide=(), kwargs...)
     for (label, times) in zip(pp.identifiers, pp.solve_times)
         steps = vcat(0:(length(times) - 2), length(times) - 2)
