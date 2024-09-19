@@ -9,7 +9,7 @@ using NamedTupleTools: merge, split
 using Plots: hline!
 using TypedNamedTuples: @MutableTypedNamedTuple, @TypedNamedTuple
 
-export Experiment, TestRun, Iterable, FlattenIterable, Seed
+export OptiTest, TestRun, Iterable, FlattenIterable, Seed
 export DataFrame, PerformanceProfile
 export run, plot, plot!
 
