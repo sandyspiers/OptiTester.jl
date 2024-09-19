@@ -46,7 +46,7 @@ end
 
 # # Iterate method
 _iterate(any) = any
-_iterate(vec::Vector) = double_flatten(_iterate.(vec))
+_iterate(arr::AbstractArray) = flatten(_iterate.(arr))
 _iterate(iter::AbstractIterable) = _iterate(getfield(iter, :iterate))
 function _iterate(nt::NamedTuple)
     iter_pairs = ((k, v) for (k, v) in key_vals(nt) if v isa AbstractIterable)

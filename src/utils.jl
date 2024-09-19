@@ -36,13 +36,18 @@ function flatten(nt::NamedTuple, key)::NamedTuple
     return merge(values(sub_nt)..., nt)
 end
 
-function double_flatten(vec::Vector)::Vector
+"""
+    flatten(arr::AbstractArray)::AbstractArray
+
+Flattens an array of potentially many embedded arrays.
+"""
+function flatten(arr::AbstractArray)::AbstractArray
     flat = []
-    for v in vec
-        if v isa AbstractVecOrMat
-            push!(flat, v...)
+    for a in arr
+        if a isa AbstractArray
+            push!(flat, flatten(a)...)
         else
-            push!(flat, v)
+            push!(flat, a)
         end
     end
     return flat
