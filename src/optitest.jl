@@ -32,7 +32,9 @@ struct Iterable <: AbstractIterable
 end
 struct FlattenIterable <: AbstractIterable
     iterate
-    FlattenIterable(iterates...) = new([iterates...])
+    FlattenIterable(iterates::NamedTuple) = new(iterates)
+    FlattenIterable(iterates::NamedTuple...) = new([iterates...])
+    FlattenIterable(; iterates...) = new(NamedTuple(iterates))
 end
 
 # # Special Iterables
